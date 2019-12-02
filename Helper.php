@@ -264,39 +264,42 @@ if ( ! function_exists('str_json')) {
      */
     function str_json($str = '/', $returnDecoded = true, $asArray = false)
     {
-        if ((str_starts('{', $str) == true) and (str_ends('}', $str) == true)) {
+        $ciEnv = function_exists('log_message') ? true : false;
+
+        if ((str_starts('{', $str) == true) && (str_ends('}', $str) == true)) {
             $json = json_decode($str, $asArray);
+
             switch (json_last_error()) {
                 case JSON_ERROR_NONE:
                     return ($returnDecoded) ? $json : true;
                     break;
                 case JSON_ERROR_DEPTH:
-                    log_message('debug', 'str_json: Maximum stack depth exceeded.');
+                    !$ciEnv || log_message('debug', 'str_json: Maximum stack depth exceeded.');
                     return false;
                     break;
                 case JSON_ERROR_STATE_MISMATCH:
-                    log_message('debug', 'str_json: Underflow or the modes mismatch.');
+                    !$ciEnv || log_message('debug', 'str_json: Underflow or the modes mismatch.');
                     return false;
                     break;
                 case JSON_ERROR_CTRL_CHAR:
-                    log_message('debug', 'str_json: Unexpected control character found.');
+                    !$ciEnv || log_message('debug', 'str_json: Unexpected control character found.');
                     return false;
                     break;
                 case JSON_ERROR_SYNTAX:
-                    log_message('debug', 'str_json: Syntax error, malformed JSON.');
+                    !$ciEnv || log_message('debug', 'str_json: Syntax error, malformed JSON.');
                     return false;
                     break;
                 case JSON_ERROR_UTF8:
-                    log_message('debug', 'str_json: Malformed UTF-8 characters, possibly incorrectly encoded.');
+                    !$ciEnv || log_message('debug', 'str_json: Malformed UTF-8 characters, possibly incorrectly encoded.');
                     return false;
                     break;
                 default:
-                    log_message('debug', 'str_json: Unknown error.');
+                    !$ciEnv || log_message('debug', 'str_json: Unknown error.');
                     return false;
                     break;
             }
         } else {
-            log_message('debug', 'str_json: String does not starts or ends properly.');
+            !$ciEnv || log_message('debug', 'str_json: String does not starts or ends properly.');
             return false;
         }
     }
