@@ -15,7 +15,8 @@ namespace Vayes\Str;
  * str_camel_case($value)
  * str_studly_case($value)
  * str_slug($title, $separator = '-')
- * str_snake_case_safe($title, $separator = '_')
+ * str_snake_case_force($title, $separator = '_')
+ * str_slug_force($title, $separator = '-')
  * str_json($str = '/', $returnDecoded = true, $asArray = false)
  */
 
@@ -238,7 +239,7 @@ if ( ! function_exists('str_slug')) {
 
 // ------------------------------------------------------------------------
 
-if ( ! function_exists('str_snake_case_safe')) {
+if ( ! function_exists('str_snake_case_force')) {
     /**
      * @inheritDoc str_slug
      *
@@ -246,7 +247,23 @@ if ( ! function_exists('str_snake_case_safe')) {
      * @param  string  $separator
      * @return string
      */
-    function str_snake_case_safe($title, $separator = '_')
+    function str_snake_case_force($title, $separator = '_')
+    {
+        return str_slug(str_snake_case($title), $separator);
+    }
+}
+
+// ------------------------------------------------------------------------
+
+if ( ! function_exists('str_slug_force')) {
+    /**
+     * @inheritDoc str_slug
+     *
+     * @param  string  $title
+     * @param  string  $separator
+     * @return string
+     */
+    function str_slug_force($title, $separator = '-')
     {
         return str_slug(str_snake_case($title), $separator);
     }
