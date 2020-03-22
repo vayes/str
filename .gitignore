@@ -1,5 +1,3 @@
-build
-vendor
-.idea
+/vendor/
+/.idea/
 composer.lock
-phpunit.xml
